@@ -1,0 +1,22 @@
+{
+  "name": "course-system",
+  "version": "0.1.0",
+  "description": "A repo to keep a project related to a small course system we want to offer websites. The back-end will be provided by a NodeJS/express server, front-end will be created in React.",
+  "main": "index.js",
+  "repository": "https://github.com/MR-Media/course-system",
+  "author": "Robin van den Berg <robinofski.development@gmail.com>",
+  "license": "",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
