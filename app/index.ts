@@ -5,7 +5,7 @@ require("./configs/database").connect();
 
 const express = require("express");
 
-const userRoute = require("./routes/user");
+const userRouter = require("./routes/user");
 
 // Initialize express
 const server = express();
@@ -14,7 +14,7 @@ const server = express();
 server.use(express.json());
 
 // Set up routes
-server.use("/user", userRoute);
+server.use("/user", userRouter);
 
 server.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
