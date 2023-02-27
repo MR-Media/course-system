@@ -1,6 +1,8 @@
+import { NextFunction, Request, Response } from "express";
+
 const jwt = require("jsonwebtoken");
 
-const auth = (req, res, next) => {
+const auth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {

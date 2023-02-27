@@ -9,8 +9,8 @@ exports.connect = () => {
       useUnifiedTopology: true,
     })
     .then(console.log("DB connection succesful!"))
-    .catch((error) => {
-      console.error("DB connection failed!", error);
+    .catch(() => {
+      console.error("DB connection failed!");
       process.exit(1);
     });
 };

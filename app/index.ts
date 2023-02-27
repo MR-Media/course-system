@@ -1,3 +1,5 @@
+import { Request, Response } from "express";
+
 require("dotenv").config();
 require("./configs/database").connect();
 
@@ -6,16 +8,16 @@ const express = require("express");
 const userRoute = require("./routes/user");
 
 // Initialize express
-const app = express();
+const server = express();
 
 // Set up middleware
-app.use(express.json());
+server.use(express.json());
 
 // Set up routes
-app.use("/user", userRoute);
+server.use("/user", userRoute);
 
-app.get("/", (req, res) => {
+server.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-module.exports = app;
+export default server;

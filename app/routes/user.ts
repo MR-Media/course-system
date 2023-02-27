@@ -1,3 +1,5 @@
+import { Request, Response } from "express";
+
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -6,7 +8,7 @@ const User = require("../models/user");
 
 const isAuthorized = require("../middleware/auth");
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req: Request, res: Response) => {
   const { first_name, last_name, email, password } = req.body;
 
   if (!(first_name && last_name && email && password)) {
@@ -43,7 +45,7 @@ router.post("/register", async (req, res) => {
   return res.status(201).json(user);
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!(email && password)) {
@@ -73,7 +75,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/getMyUser", isAuthorized, async (req, res) => {
+router.get("/getMyUser", isAuthorized, async (req: Request, res: Response) => {
   const user = await User.findById(req.decodedToken.uid);
 
   if (!user) {
@@ -85,18 +87,22 @@ router.get("/getMyUser", isAuthorized, async (req, res) => {
   return res.send(user);
 });
 
-router.get("/getUserById", isAuthorized, async (req, res) => {
-  const { user_id } = req.body;
+router.get(
+  "/getUserById",
+  isAuthorized,
+  async (req: Request, res: Response) => {
+    const { user_id } = req.body;
 
-  const user = await User.findById(user_id);
+    const user = await User.findById(user_id);
 
-  if (!user) {
-    return res.status(404).send("User not found");
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    user.password = undefined;
+
+    return res.send(user);
   }
-
-  user.password = undefined;
-
-  return res.send(user);
-});
+);
 
 module.exports = router;
