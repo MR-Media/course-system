@@ -1,13 +1,13 @@
 import { Router } from "express";
 
+import { isAuthorized } from "../middleware/auth";
+
 import {
   get_my_user,
   get_user_by_id,
   login,
   register,
 } from "../controllers/userController";
-
-const isAuthorized = require("../middleware/auth");
 
 export const userRouter = Router();
 

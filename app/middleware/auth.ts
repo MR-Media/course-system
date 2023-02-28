@@ -2,7 +2,11 @@ import { NextFunction, Request, Response } from "express";
 
 const jwt = require("jsonwebtoken");
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
+export const isAuthorized = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
@@ -18,5 +22,3 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
 
   return next();
 };
-
-module.exports = auth;

@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import { get_quizzes } from "../controllers/quizController";
+import { isAuthorized } from "../middleware/auth";
 
-const isAuthorized = require("../middleware/auth");
+import { get_quizzes } from "../controllers/quizController";
 
 export const quizRouter = Router();
 
