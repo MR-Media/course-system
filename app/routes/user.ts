@@ -1,12 +1,17 @@
-const router = require("express").Router();
+import { Router } from "express";
 
-const userController = require("../controllers/userController");
+import {
+  get_my_user,
+  get_user_by_id,
+  login,
+  register,
+} from "../controllers/userController";
 
 const isAuthorized = require("../middleware/auth");
 
-router.post("/register", userController.register);
-router.post("/login", userController.login);
-router.get("/getMyUser", isAuthorized, userController.get_my_user);
-router.get("/getUserById", isAuthorized, userController.get_user_by_id);
+export const userRouter = Router();
 
-module.exports = router;
+userRouter.post("/register", register);
+userRouter.post("/login", login);
+userRouter.get("/getMyUser", isAuthorized, get_my_user);
+userRouter.get("/getUserById", isAuthorized, get_user_by_id);

@@ -1,8 +1,13 @@
 import { Schema, model } from "mongoose";
+import { ILesson, lessonSchema } from "./Lesson";
 
-const lessonSchema = require("./lesson");
+export interface IModule {
+  title: string;
+  description: string;
+  lessons: ILesson[];
+}
 
-const moduleSchema = new Schema({
+export const moduleSchema = new Schema<IModule>({
   title: {
     type: String,
     required: true,
@@ -10,6 +15,4 @@ const moduleSchema = new Schema({
   lessons: [lessonSchema],
 });
 
-export type moduleType = typeof moduleSchema;
-
-module.exports = model("Module", moduleSchema);
+export const Module = model<IModule>("Module", moduleSchema);

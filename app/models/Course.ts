@@ -1,6 +1,16 @@
 import { Schema, model } from "mongoose";
 
-const moduleSchema = require("./module");
+import { IModule, moduleSchema } from "./Module";
+import { IUser } from "./User";
+
+export interface ICourse {
+  title: string;
+  description: string;
+  price: number;
+  modules: IModule[];
+  author: IUser;
+  createdAt: Date;
+}
 
 const courseSchema = new Schema({
   title: {

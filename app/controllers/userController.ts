@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
-exports.register = async (req: Request, res: Response) => {
+const register = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
 
   if (!(username && email && password)) {
@@ -41,7 +41,7 @@ exports.register = async (req: Request, res: Response) => {
   return res.status(201).json(user);
 };
 
-exports.login = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!(email && password)) {
@@ -71,7 +71,7 @@ exports.login = async (req: Request, res: Response) => {
   }
 };
 
-exports.get_my_user = async (req: Request, res: Response) => {
+const get_my_user = async (req: Request, res: Response) => {
   const user = await User.findById(req.decodedToken.uid);
 
   if (!user) {
@@ -83,7 +83,7 @@ exports.get_my_user = async (req: Request, res: Response) => {
   return res.send(user);
 };
 
-exports.get_user_by_id = async (req: Request, res: Response) => {
+const get_user_by_id = async (req: Request, res: Response) => {
   const { user_id } = req.body;
 
   const user = await User.findById(user_id);
@@ -96,3 +96,5 @@ exports.get_user_by_id = async (req: Request, res: Response) => {
 
   return res.send(user);
 };
+
+export { register, login, get_my_user, get_user_by_id };

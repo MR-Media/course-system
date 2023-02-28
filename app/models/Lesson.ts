@@ -1,8 +1,14 @@
 import { Schema, model } from "mongoose";
 
-const quizSchema = require("./quiz");
+import { IQuiz, quizSchema } from "./Quiz";
 
-const lessonSchema = new Schema({
+export interface ILesson {
+  title: string;
+  content: string;
+  quizzes: IQuiz[];
+}
+
+export const lessonSchema = new Schema<ILesson>({
   title: {
     type: String,
     required: true,
@@ -14,6 +20,4 @@ const lessonSchema = new Schema({
   quizzes: [quizSchema],
 });
 
-export type lessonType = typeof lessonSchema;
-
-module.exports = model("Lesson", lessonSchema);
+export const Lesson = model<ILesson>("Lesson", lessonSchema);
