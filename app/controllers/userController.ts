@@ -3,12 +3,12 @@ import { Request, Response } from "express";
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/user");
+const User = require("../models/User");
 
 exports.register = async (req: Request, res: Response) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!(first_name && last_name && email && password)) {
+  if (!(username && email && password)) {
     return res.status(400).send("All fields are required!");
   }
 
@@ -20,8 +20,7 @@ exports.register = async (req: Request, res: Response) => {
   const encryptedPassword = await bcrypt.hash(password, 10);
 
   const user = await User.create({
-    first_name,
-    last_name,
+    username,
     email: email.toLowerCase(),
     password: encryptedPassword,
   });

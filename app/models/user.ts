@@ -1,23 +1,31 @@
 import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
-  first_name: {
+  username: {
     type: String,
-    default: null,
-  },
-  last_name: {
-    type: String,
-    default: null,
+    required: true,
   },
   email: {
     type: String,
-    unique: true,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
     required: true,
   },
+  courses: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = model("user", userSchema);
+export const userType = typeof userSchema;
+
+module.exports = model("User", userSchema);
