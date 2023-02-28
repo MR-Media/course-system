@@ -1,22 +1,27 @@
+import { config } from "dotenv";
 import express, { Request, Response } from "express";
 
-import { quizRouter } from "./routes/quiz";
+import { connectDatabase } from "./configs/database";
 
-require("dotenv").config();
-require("./configs/database").connect();
+import { quizRouter } from "./routes/quiz";
+import { userRouter } from "./routes/user";
+
+// Setup .ENV
+config();
 
 // Initialize express
-const server = express();
+export const server = express();
+
+// Connect to MongoDB with Mongoose
+connectDatabase();
 
 // Set up middleware
 server.use(express.json());
 
 // Set up routes
-server.use("/users", require("./routes/user"));
+server.use("/users", userRouter);
 server.use("/quizzes", quizRouter);
 
 server.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
-
-export default server;
