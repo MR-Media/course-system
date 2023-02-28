@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-
-const jwt = require("jsonwebtoken");
+import * as jwt from "jsonwebtoken";
 
 export const isAuthorized = (
   req: Request,
@@ -14,8 +13,8 @@ export const isAuthorized = (
   }
 
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    req.decodedToken = decodedToken;
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET || "");
+    req.decodedToken = decodedToken as any; // TODO: Find a way to type this
   } catch (error) {
     return res.status(401).send("Invalid token!");
   }
