@@ -1,6 +1,12 @@
 import { Schema, model } from "mongoose";
 
-const quizSchema = new Schema({
+interface IQuiz {
+  question: string;
+  options: string[];
+  correctAnswer: number;
+}
+
+const quizSchema = new Schema<IQuiz>({
   question: {
     type: String,
     required: true,
@@ -19,6 +25,6 @@ const quizSchema = new Schema({
   },
 });
 
-export type quizType = typeof quizSchema;
+const Quiz = model<IQuiz>("Quiz", quizSchema);
 
-module.exports = model("quiz", quizSchema);
+export default Quiz;
