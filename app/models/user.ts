@@ -1,5 +1,15 @@
 import { Schema, model } from "mongoose";
 
+import { ICourse } from "./Course";
+
+export interface IUser {
+  username: string;
+  email: string;
+  password: string;
+  courses: ICourse;
+  createdAt: Date;
+}
+
 const userSchema = new Schema({
   username: {
     type: String,
@@ -25,7 +35,5 @@ const userSchema = new Schema({
     default: Date.now,
   },
 });
-
-export const userType = typeof userSchema;
 
 module.exports = model("User", userSchema);
