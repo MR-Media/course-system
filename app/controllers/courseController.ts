@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Course, ICourse } from "../models/Course";
+import { User } from "../models/User";
 
 export const get_courses = async (req: Request, res: Response) => {
   const courses = await Course.find();
@@ -36,6 +37,9 @@ export const post_course = async (req: Request, res: Response) => {
     instructor: uid,
     price,
   });
+
+  // Add course to user's courses array
+  await User.findByIdAndUpdate(uid, { $push: { courses: course._id } });
 
   return res.status(201).json(course);
 };
