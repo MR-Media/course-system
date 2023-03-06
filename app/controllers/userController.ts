@@ -1,15 +1,14 @@
-const router = require("express").Router();
+import { Request, Response } from "express";
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/user");
+const User = require("../models/User");
 
-const isAuthorized = require("../middleware/auth");
+const register = async (req: Request, res: Response) => {
+  const { username, email, password } = req.body;
 
-router.post("/register", async (req, res) => {
-  const { first_name, last_name, email, password } = req.body;
-
-  if (!(first_name && last_name && email && password)) {
+  if (!(username && email && password)) {
     return res.status(400).send("All fields are required!");
   }
 
@@ -21,8 +20,7 @@ router.post("/register", async (req, res) => {
   const encryptedPassword = await bcrypt.hash(password, 10);
 
   const user = await User.create({
-    first_name,
-    last_name,
+    username,
     email: email.toLowerCase(),
     password: encryptedPassword,
   });
@@ -41,9 +39,9 @@ router.post("/register", async (req, res) => {
   user.password = undefined;
 
   return res.status(201).json(user);
-});
+};
 
-router.post("/login", async (req, res) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!(email && password)) {
@@ -71,9 +69,9 @@ router.post("/login", async (req, res) => {
   } else {
     res.status(400).send("Passwords do not match");
   }
-});
+};
 
-router.get("/getMyUser", isAuthorized, async (req, res) => {
+const get_my_user = async (req: Request, res: Response) => {
   const user = await User.findById(req.decodedToken.uid);
 
   if (!user) {
@@ -83,9 +81,9 @@ router.get("/getMyUser", isAuthorized, async (req, res) => {
   user.password = undefined;
 
   return res.send(user);
-});
+};
 
-router.get("/getUserById", isAuthorized, async (req, res) => {
+const get_user_by_id = async (req: Request, res: Response) => {
   const { user_id } = req.body;
 
   const user = await User.findById(user_id);
@@ -97,6 +95,6 @@ router.get("/getUserById", isAuthorized, async (req, res) => {
   user.password = undefined;
 
   return res.send(user);
-});
+};
 
-module.exports = router;
+export { register, login, get_my_user, get_user_by_id };
