@@ -4,11 +4,12 @@ import { IModule, moduleSchema } from "./Module";
 import { IUser } from "./User";
 
 export interface ICourse {
+  _id: string;
   title: string;
   description: string;
   price: number;
   modules: IModule[];
-  author: IUser;
+  instructor: IUser;
   createdAt: Date;
 }
 
@@ -23,11 +24,11 @@ const courseSchema = new Schema({
   },
   price: {
     type: Number,
-    required: true,
+    default: 0,
     min: 0,
   },
   modules: [moduleSchema],
-  author: {
+  instructor: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
@@ -37,6 +38,4 @@ const courseSchema = new Schema({
   },
 });
 
-export type CourseType = typeof courseSchema;
-
-module.exports = model("Course", courseSchema);
+export const Course = model<ICourse>("Course", courseSchema);

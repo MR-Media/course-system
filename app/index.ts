@@ -3,8 +3,9 @@ import express, { Request, Response } from "express";
 
 import { connectDatabase } from "./configs/database";
 
-import { quizRouter } from "./routes/quiz";
 import { userRouter } from "./routes/user";
+import { quizRouter } from "./routes/quiz";
+import { courseRouter } from "./routes/course";
 
 // Setup .ENV
 config();
@@ -21,6 +22,7 @@ server.use(express.json());
 // Set up routes
 server.use("/users", userRouter);
 server.use("/quizzes", quizRouter);
+server.use("/courses", courseRouter);
 
 server.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
