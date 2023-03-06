@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import * as bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const User = require("../models/User");
+import { User } from "../models/User";
 
 const register = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -29,16 +29,19 @@ const register = async (req: Request, res: Response) => {
     {
       uid: user._id,
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || "",
     {
       expiresIn: "2h",
     }
   );
 
-  user.token = token;
-  user.password = undefined;
+  const userWithToken = {
+    ...user.toObject(),
+    password: undefined,
+    token,
+  };
 
-  return res.status(201).json(user);
+  return res.status(201).json(userWithToken);
 };
 
 const login = async (req: Request, res: Response) => {
@@ -48,10 +51,10 @@ const login = async (req: Request, res: Response) => {
     res.status(400).send("All fields are required!");
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    res.status(400).send("No user found with this email!");
+    return res.status(400).send("No user found with this email!");
   }
 
   if (await bcrypt.compare(password, user.password)) {
@@ -59,7 +62,7 @@ const login = async (req: Request, res: Response) => {
       {
         uid: user._id,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || "",
       {
         expiresIn: "2h",
       }
@@ -78,8 +81,6 @@ const get_my_user = async (req: Request, res: Response) => {
     return res.status(404).send("User not found");
   }
 
-  user.password = undefined;
-
   return res.send(user);
 };
 
@@ -91,8 +92,6 @@ const get_user_by_id = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).send("User not found");
   }
-
-  user.password = undefined;
 
   return res.send(user);
 };

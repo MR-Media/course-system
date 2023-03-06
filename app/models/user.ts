@@ -23,6 +23,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
   courses: [
     {
@@ -36,4 +37,4 @@ const userSchema = new Schema({
   },
 });
 
-module.exports = model("User", userSchema);
+export const User = model<IUser>("User", userSchema);
