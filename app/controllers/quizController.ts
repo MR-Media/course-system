@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { IQuiz, Quiz } from "../models/Quiz";
 
-const get_quizzes = async (req: Request, res: Response) => {
+export const get_quizzes = async (req: Request, res: Response) => {
   const quizzes = await Quiz.find();
 
   if (!quizzes) {
@@ -12,7 +12,7 @@ const get_quizzes = async (req: Request, res: Response) => {
   return res.json(quizzes);
 };
 
-const post_quiz = async (req: Request, res: Response) => {
+export const post_quiz = async (req: Request, res: Response) => {
   const { question, options, correctAnswer } = req.body as IQuiz;
 
   if (!(question && options && correctAnswer)) {
@@ -41,7 +41,7 @@ const post_quiz = async (req: Request, res: Response) => {
   return res.status(201).json(quiz);
 };
 
-const delete_quiz = async (req: Request, res: Response) => {
+export const delete_quiz = async (req: Request, res: Response) => {
   const { _id } = req.body;
   const quiz = await Quiz.findOneAndDelete({ _id });
 
@@ -53,5 +53,3 @@ const delete_quiz = async (req: Request, res: Response) => {
 
   return res.status(204);
 };
-
-export { get_quizzes, post_quiz, delete_quiz };
