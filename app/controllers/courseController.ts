@@ -23,6 +23,18 @@ export const get_courses_by_user = async (req: Request, res: Response) => {
   return res.json(courses);
 };
 
+export const get_course_by_id = async (req: Request, res: Response) => {
+  const { courseId } = req.params;
+
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    return res.status(404).send("Course not found");
+  }
+
+  return res.json(course);
+};
+
 export const post_course = async (req: Request, res: Response) => {
   const { title, description, price } = req.body as ICourse;
   const { uid } = req.decodedToken;
