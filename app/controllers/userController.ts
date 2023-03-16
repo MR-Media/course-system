@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 import { User } from "../models/User";
 
-const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
 
   if (!(username && email && password)) {
@@ -44,7 +44,7 @@ const register = async (req: Request, res: Response) => {
   return res.status(201).json(userWithToken);
 };
 
-const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!(email && password)) {
@@ -74,7 +74,7 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-const get_my_user = async (req: Request, res: Response) => {
+export const get_my_user = async (req: Request, res: Response) => {
   const user = await User.findById(req.decodedToken.uid);
 
   if (!user) {
@@ -84,16 +84,32 @@ const get_my_user = async (req: Request, res: Response) => {
   return res.send(user);
 };
 
-const get_user_by_id = async (req: Request, res: Response) => {
+export const get_user_by_id = async (req: Request, res: Response) => {
   const { user_id } = req.body;
 
   const user = await User.findById(user_id);
 
-  if (!user) {
-    return res.status(404).send("User not found");
-  }
-
   return res.send(user);
 };
 
-export { register, login, get_my_user, get_user_by_id };
+export const get_all_users = async (req: Request, res: Response) => {
+  const users = await User.find();
+
+  if (!users) {
+    return res.status(500).send("Something went wrong fetching the users");
+  }
+
+  return res.send(users);
+};
+
+export const delete_user = async (req: Request, res: Response) => {
+  const { user_id } = req.body;
+
+  if (!user_id) return res.status(400).send("User id is required!");
+
+  const user = await User.findByIdAndDelete(user_id);
+
+  if (!user) return res.status(404).send("User not found!");
+
+  return res.status(200).send("User deleted!");
+};
