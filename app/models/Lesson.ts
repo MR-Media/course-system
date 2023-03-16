@@ -1,11 +1,10 @@
 import { Schema, model } from "mongoose";
-
-import { IQuiz, quizSchema } from "./Quiz";
+import { IModule } from "./Module";
 
 export interface ILesson {
   title: string;
   content: string;
-  quizzes: IQuiz[];
+  moduleId: IModule;
 }
 
 export const lessonSchema = new Schema<ILesson>({
@@ -17,7 +16,11 @@ export const lessonSchema = new Schema<ILesson>({
     type: String,
     required: true,
   },
-  quizzes: [quizSchema],
+  moduleId: {
+    type: Schema.Types.ObjectId,
+    ref: "Module",
+    required: true,
+  },
 });
 
 export const Lesson = model<ILesson>("Lesson", lessonSchema);
