@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Course } from "../models/Course";
 import { IModule, Module } from "../models/Module";
 
 export const get_modules = async (req: Request, res: Response) => {
@@ -35,6 +36,9 @@ export const post_module = async (req: Request, res: Response) => {
     description,
     courseId,
   });
+
+  // Add module to the course's modules array
+  await Course.findByIdAndUpdate(courseId, { $push: { modules: module._id } });
 
   return res.status(201).json(module);
 };

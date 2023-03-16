@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ILesson, Lesson } from "../models/Lesson";
+import { Module } from "../models/Module";
 
 export const get_lessons = async (req: Request, res: Response) => {
   const lessons = await Lesson.find();
@@ -35,6 +36,9 @@ export const post_lesson = async (req: Request, res: Response) => {
     content,
     moduleId,
   });
+
+  // Add lesson to the module's lessons array
+  await Module.findByIdAndUpdate(moduleId, { $push: { lessons: lesson._id } });
 
   return res.status(201).json(lesson);
 };
