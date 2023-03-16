@@ -46,7 +46,7 @@ export const post_course = async (req: Request, res: Response) => {
   const course = await Course.create({
     title,
     description,
-    instructor: uid,
+    instructorId: uid,
     price,
   });
 

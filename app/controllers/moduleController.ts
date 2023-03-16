@@ -24,7 +24,7 @@ export const get_module_by_id = async (req: Request, res: Response) => {
 };
 
 export const post_module = async (req: Request, res: Response) => {
-  const { title, description, course } = req.body as IModule;
+  const { title, description, courseId } = req.body as IModule;
 
   if (!(title && description)) {
     return res.status(400).send("Title and description are required fields!");
@@ -33,14 +33,14 @@ export const post_module = async (req: Request, res: Response) => {
   const module = await Module.create({
     title,
     description,
-    course,
+    courseId,
   });
 
   return res.status(201).json(module);
 };
 
 export const edit_module = async (req: Request, res: Response) => {
-  const { title, description, course, lessons } = req.body as IModule;
+  const { title, description, courseId, lessons } = req.body as IModule;
   const { moduleId } = req.params;
 
   if (!(title && description)) {
@@ -52,7 +52,7 @@ export const edit_module = async (req: Request, res: Response) => {
     {
       title,
       description,
-      course,
+      courseId,
       lessons,
     },
     { new: true }
@@ -63,6 +63,8 @@ export const edit_module = async (req: Request, res: Response) => {
 
 export const delete_module = async (req: Request, res: Response) => {
   const { moduleId } = req.params;
+
+  if (!moduleId) return res.status(400).send("ModuleId is required!");
 
   const module = await Module.findByIdAndDelete(moduleId);
 

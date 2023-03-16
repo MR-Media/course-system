@@ -5,7 +5,7 @@ import { ILesson, lessonSchema } from "./Lesson";
 export interface IModule {
   title: string;
   description: string;
-  course: ICourse;
+  courseId: ICourse;
   lessons?: ILesson[];
 }
 
@@ -18,9 +18,10 @@ export const moduleSchema = new Schema<IModule>({
     type: String,
     required: true,
   },
-  course: {
+  courseId: {
     type: Schema.Types.ObjectId,
     ref: "Course",
+    required: true,
   },
   lessons: [lessonSchema],
 });

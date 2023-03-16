@@ -9,7 +9,7 @@ export interface ICourse {
   description: string;
   price: number;
   modules: IModule[];
-  instructor: IUser;
+  instructorId: IUser;
   createdAt: Date;
 }
 
